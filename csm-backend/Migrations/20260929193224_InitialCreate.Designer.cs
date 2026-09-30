@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using csm_backend.Data;
+using csm_backend.Models;
 
 #nullable disable
 
 namespace csm_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260929130337_InitialCreate")]
+    [Migration("20260929193224_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -23,6 +24,8 @@ namespace csm_backend.Migrations
                 .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "post_status", new[] { "pending", "publish", "failed" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "user_role", new[] { "admin", "author" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("csm_backend.Models.PostModel", b =>
@@ -41,8 +44,8 @@ namespace csm_backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<PostStatus>("Status")
+                        .HasColumnType("post_status");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -73,11 +76,16 @@ namespace csm_backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("integer");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<UserRole>("UserRole")
+                        .HasColumnType("user_role");
 
                     b.Property<string>("Username")
                         .IsRequired()

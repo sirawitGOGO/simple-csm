@@ -12,11 +12,15 @@ namespace csm_backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<PostModel>()
             .HasOne(p => p.User)
             .WithMany(u => u.Posts)
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.HasPostgresEnum<UserRole>();
+            modelBuilder.HasPostgresEnum<PostStatus>();
         }
     }
 }
