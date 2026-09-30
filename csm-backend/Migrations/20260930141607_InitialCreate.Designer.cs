@@ -13,7 +13,7 @@ using csm_backend.Models;
 namespace csm_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260929193224_InitialCreate")]
+    [Migration("20260930141607_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

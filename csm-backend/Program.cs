@@ -74,4 +74,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+try
+{
+    await csm_backend.Data.DbSeeder.SeedAdminAsync(app.Services);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[Error] An error occurred while seeding the database: {ex.Message}");
+}
+
 app.Run();
